@@ -48,7 +48,7 @@ async def identify_piece(image: BytesIO, filename: str = "image.jpg") -> dict:
         async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
             response = await client.post(
                 BRICKOGNIZE_URL,
-                files={"file": (filename, image_bytes, "image/jpeg")},
+                files={"query_image": (filename, image_bytes, "image/jpeg")},
             )
             response.raise_for_status()
 
