@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 # Attempt to import picamera2 — only available on Pi
 try:
     from picamera2 import Picamera2
-    from picamera2.encoders import MJPEGEncoder
-    from picamera2.outputs import FileOutput
+    from libcamera import controls as libcamera_controls
     PI_CAMERA = True
 except ImportError:
     PI_CAMERA = False
@@ -70,6 +69,14 @@ class _PiCamera:
         )
         self._cam.configure(config)
         self._cam.start()
+
+        # Enable continuous autofocus (Camera Module 3 only — silently ignored on older modules)
+        try:
+            self._cam.set_controls({"AfMode": libcamera_controls.AfModeEnum.Continuous})
+            logger.info("Continuous autofocus enabled")
+        except Exception:
+            logger.info("Autofocus not available on this camera module — skipping")
+
         self._running = True
         self._thread = threading.Thread(target=self._capture_loop, daemon=True)
         self._thread.start()
