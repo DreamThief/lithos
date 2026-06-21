@@ -1,0 +1,388 @@
+/* ─── Reset & base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --lego-red:    #c91a09;
+  --lego-yellow: #f5cd2f;
+  --lego-black:  #1a1a1a;
+  --lego-white:  #f8f8f8;
+  --lego-blue:   #006db7;
+  --lego-dark:   #111111;
+  --lego-grey:   #2a2a2a;
+  --lego-mid:    #3a3a3a;
+  --radius:      10px;
+  --shadow:      0 4px 24px rgba(0,0,0,0.5);
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--lego-dark);
+  color: var(--lego-white);
+  min-height: 100vh;
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────────── */
+header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--lego-red);
+  padding: 18px 28px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.logo-stud {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 2px solid rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+  color: var(--lego-yellow);
+  flex-shrink: 0;
+}
+
+.subtitle {
+  font-size: 0.72rem;
+  opacity: 0.85;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+/* ─── Main layout ───────────────────────────────────────────────────────────── */
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 780px) {
+  main { grid-template-columns: 1fr; }
+}
+
+/* ─── Camera panel ──────────────────────────────────────────────────────────── */
+.camera-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.camera-frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 3px solid var(--lego-grey);
+  background: #000;
+  aspect-ratio: 4/3;
+  box-shadow: var(--shadow);
+}
+
+.camera-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scan-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scan-flash.flash {
+  animation: flash 0.3s ease-out forwards;
+}
+
+@keyframes flash {
+  0%   { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+.camera-controls {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.btn-scan {
+  flex: 1;
+  background: var(--lego-red);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 4px 0 #8a0e03;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-scan:hover  { background: #e01f0d; }
+.btn-scan:active { transform: translateY(3px); box-shadow: 0 1px 0 #8a0e03; }
+.btn-scan:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-icon { font-size: 1rem; }
+
+.btn-upload {
+  background: var(--lego-grey);
+  color: var(--lego-white);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--lego-mid);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.btn-upload:hover { background: var(--lego-mid); }
+
+input[type="file"] { display: none; }
+
+/* ─── Results panel ─────────────────────────────────────────────────────────── */
+.results-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-bar {
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.status-idle     { background: var(--lego-grey);  color: #aaa; }
+.status-scanning { background: var(--lego-blue);  color: white; }
+.status-success  { background: #1a7a3a;            color: #7eff9d; }
+.status-error    { background: #6e1515;            color: #ffaaaa; }
+
+/* ─── Top result card ───────────────────────────────────────────────────────── */
+.top-result {
+  background: var(--lego-grey);
+  border-radius: var(--radius);
+  border: 2px solid var(--lego-mid);
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.top-result-image-wrap {
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #555;
+}
+
+.top-result-image-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.top-result-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.part-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--lego-yellow);
+}
+
+.part-id {
+  font-size: 0.85rem;
+  color: #aaa;
+  font-family: monospace;
+  letter-spacing: 0.06em;
+}
+
+.confidence-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.confidence-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  white-space: nowrap;
+}
+
+.confidence-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--lego-mid);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #1a7a3a, #4cff80);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.confidence-pct {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #7eff9d;
+  white-space: nowrap;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ─── Alternate results ─────────────────────────────────────────────────────── */
+.alt-results {
+  background: var(--lego-grey);
+  border-radius: var(--radius);
+  border: 2px solid var(--lego-mid);
+  padding: 16px 20px;
+}
+
+.alt-results h3 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.alt-results ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alt-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--lego-mid);
+  cursor: default;
+  transition: background 0.15s;
+}
+
+.alt-item:hover { background: #4a4a4a; }
+
+.alt-item-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  background: white;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.alt-item-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.alt-item-id {
+  font-size: 0.75rem;
+  color: #888;
+  font-family: monospace;
+}
+
+.alt-item-score {
+  font-size: 0.78rem;
+  color: #7eff9d;
+  font-weight: 700;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ─── Error & no-result ─────────────────────────────────────────────────────── */
+.error-box {
+  background: #4a1515;
+  border: 2px solid #8a2020;
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  color: #ffaaaa;
+  font-size: 0.9rem;
+}
+
+.no-result {
+  background: var(--lego-grey);
+  border: 2px solid var(--lego-mid);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* ─── Footer ────────────────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.75rem;
+  color: #555;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+footer a { color: #777; text-decoration: none; }
+footer a:hover { color: #aaa; }
+
+.footer-dot { font-size: 0.5rem; color: #444; }
+
+/* ─── Utility ───────────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
