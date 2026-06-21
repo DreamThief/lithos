@@ -34,13 +34,12 @@ sudo reboot
 ```bash
 git clone https://github.com/DreamThief/lithos.git /home/$USER/lithos
 cd /home/$USER/lithos
-python3 -m venv venv
+python3 -m venv venv --system-site-packages
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> **Note:** `picamera2` comes pre-installed on Raspberry Pi OS. Do not `pip install` it.
-> Modern Pi OS (Debian Bookworm+) requires a virtual environment — do not use `--break-system-packages`.
+> **Note:** `picamera2` is a system-level package on Pi OS. The `--system-site-packages` flag is required so the venv can see it. Do not `pip install picamera2`.
 
 ### 4. Run the server
 ```bash
