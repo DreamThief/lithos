@@ -32,16 +32,20 @@ sudo reboot
 
 ### 3. Clone and install
 ```bash
-git clone <your-repo-url> lithos
-cd lithos
+git clone https://github.com/DreamThief/lithos.git /home/$USER/lithos
+cd /home/$USER/lithos
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
 > **Note:** `picamera2` comes pre-installed on Raspberry Pi OS. Do not `pip install` it.
+> Modern Pi OS (Debian Bookworm+) requires a virtual environment — do not use `--break-system-packages`.
 
 ### 4. Run the server
 ```bash
-cd backend
+source /home/$USER/lithos/venv/bin/activate
+cd /home/$USER/lithos/backend
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
@@ -64,9 +68,9 @@ Description=L.I.T.H.O.S. LEGO Scanner
 After=network.target
 
 [Service]
-User=pi
-WorkingDirectory=/home/pi/lithos/backend
-ExecStart=/usr/bin/python3 -m uvicorn main:app --host 0.0.0.0 --port 8000
+User=YOUR_USERNAME
+WorkingDirectory=/home/YOUR_USERNAME/lithos/backend
+ExecStart=/home/YOUR_USERNAME/lithos/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
 Restart=always
 
 [Install]
