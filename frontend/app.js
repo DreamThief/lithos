@@ -132,6 +132,18 @@ async function uploadImage(event) {
   }
 }
 
+function updateZoomLabel(value) {
+  document.getElementById("zoom-value").textContent = parseFloat(value).toFixed(1) + "×";
+}
+
+async function applyZoom(value) {
+  try {
+    await fetch(`/zoom?factor=${parseFloat(value).toFixed(1)}`, { method: "POST" });
+  } catch (err) {
+    console.warn("Zoom request failed:", err);
+  }
+}
+
 // Keyboard shortcut: spacebar triggers scan
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space" && !scanBtn.disabled) {

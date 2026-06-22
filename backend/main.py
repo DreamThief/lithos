@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Query
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -65,6 +65,13 @@ async def scan():
 
     result = await identify_piece(io.BytesIO(frame), filename="scan.jpg")
     return JSONResponse(result)
+
+
+@app.post("/zoom")
+async def set_zoom(factor: float = Query(..., ge=1.0, le=4.0)):
+    """Set camera zoom level. 1.0 = fully zoomed out, 4.0 = 4x zoom."""
+    camera.set_zoom(factor)
+    return {"zoom": factor}
 
 
 @app.post("/upload")

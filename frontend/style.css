@@ -163,6 +163,70 @@ main {
 
 input[type="file"] { display: none; }
 
+/* ─── Zoom control ──────────────────────────────────────────────────────────── */
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--lego-grey);
+  border: 2px solid var(--lego-mid);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.zoom-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #aaa;
+  white-space: nowrap;
+  letter-spacing: 0.06em;
+}
+
+.zoom-value {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--lego-yellow);
+  min-width: 36px;
+  text-align: right;
+  font-family: monospace;
+}
+
+input[type="range"] {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--lego-mid);
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--lego-yellow);
+  border: 2px solid #c9a800;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--lego-yellow);
+  border: 2px solid #c9a800;
+  cursor: pointer;
+}
+
 /* ─── Results panel ─────────────────────────────────────────────────────────── */
 .results-panel {
   display: flex;

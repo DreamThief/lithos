@@ -49,6 +49,9 @@ class _DevCamera:
         except ImportError:
             return None
 
+    def set_zoom(self, factor: float) -> None:
+        pass  # No-op in dev mode
+
 
 class _PiCamera:
     """Pi camera using picamera2 with a circular MJPEG frame buffer."""
@@ -101,6 +104,22 @@ class _PiCamera:
         with self._lock:
             return self._frame
 
+    def set_zoom(self, factor: float) -> None:
+        """Adjust zoom by cropping the sensor area.
+        factor=1.0 is fully zoomed out (entire sensor), factor=4.0 is 4x zoom.
+        """
+        factor = max(1.0, min(factor, 4.0))
+        try:
+            sensor_w, sensor_h = self._cam.camera_properties["PixelArraySize"]
+            crop_w = int(sensor_w / factor)
+            crop_h = int(sensor_h / factor)
+            crop_x = (sensor_w - crop_w) // 2
+            crop_y = (sensor_h - crop_h) // 2
+            self._cam.set_controls({"ScalerCrop": (crop_x, crop_y, crop_w, crop_h)})
+            logger.info("Zoom set to %.2fx (crop %dx%d)", factor, crop_w, crop_h)
+        except Exception as exc:
+            logger.warning("Failed to set zoom: %s", exc)
+
 
 class Camera:
     """Public camera interface — automatically selects Pi or dev backend."""
@@ -116,3 +135,6 @@ class Camera:
 
     def get_frame(self) -> bytes | None:
         return self._backend.get_frame()
+
+    def set_zoom(self, factor: float) -> None:
+        self._backend.set_zoom(factor)
