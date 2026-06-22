@@ -4,6 +4,7 @@
 Point a camera at a LEGO piece → get the part number, name, and image instantly.
 
 ---
+![Placeholder](https://raw.githubusercontent.com/DreamThief/lithos/refs/heads/main/lithos%20screen.jpg)
 
 ## Hardware Required
 
