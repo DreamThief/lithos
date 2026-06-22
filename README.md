@@ -14,6 +14,7 @@ Point a camera at a LEGO piece → get the part number, name, and image instantl
 | Photo lightbox tent (30cm cube) | Collapsible cube with built-in LEDs and white backdrop — provides even, shadow-free lighting. Search "product photography lightbox" on Amazon (~$20-35) |
 | Small screen (optional) | [Official 7" touchscreen](https://www.raspberrypi.com/products/raspberry-pi-touch-display/) or any HDMI display |
 | MicroSD card | 16GB+ with Raspberry Pi OS (64-bit) |
+|HDMI cable|Mini to micro; the raspberrypi has a micro and the small screens usually need the mini |
 
 ---
 
